@@ -38,7 +38,7 @@ public class BoomerangEntity extends EntityThrowable {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if (!returning && airTime > 30) {
+        if (!returning && ticksExisted > 30) {
             returning = true;
         }
 
@@ -56,7 +56,7 @@ public class BoomerangEntity extends EntityThrowable {
     private void adjustVelocity() {
         if (returning && owner != null) {
             Vec3d playerPos = new Vec3d(owner.posX, owner.posY + 1, owner.posZ);
-            Vec3d dirVec = playerPos.subtract(getPositionVector()).normalize().scale(.3);
+            Vec3d dirVec = playerPos.subtract(getPositionVector()).normalize().scale(.35);
             this.motionX = dirVec.x;
             this.motionY = dirVec.y;
             this.motionZ = dirVec.z;

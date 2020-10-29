@@ -1,5 +1,6 @@
 package tfar.lozi;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -23,6 +24,11 @@ public class LegendofZeldaItems {
     @SubscribeEvent
     public static void items(RegistryEvent.Register<Item> event) {
         ModItems.register(event.getRegistry());
+    }
+
+    @SubscribeEvent
+    public static void blocks(RegistryEvent.Register<Block> event) {
+        ModBlocks.register(event.getRegistry());
     }
 
     @SubscribeEvent
