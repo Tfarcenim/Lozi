@@ -1,12 +1,21 @@
 package tfar.lozi;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import tfar.lozi.storage.HeartContainerWSD;
+
+import static tfar.lozi.storage.HeartContainerWSD.SPAWN_REINFORCEMENTS_CHANCE;
 
 @Mod(modid = LegendofZeldaItems.MODID, name = LegendofZeldaItems.NAME, version = LegendofZeldaItems.VERSION)
 @Mod.EventBusSubscriber
@@ -39,5 +48,12 @@ public class LegendofZeldaItems {
     @SubscribeEvent
     public static void registerEntity(RegistryEvent.Register<EntityEntry> e) {
         e.getRegistry().register(ModEntities.BOOMERANG);
+    }
+
+    @SubscribeEvent
+    public static void playerRespawn(EntityJoinWorldEvent e) {
+        if (e.getEntity() instanceof EntityPlayer && !e.getWorld().isRemote) {
+            HeartContainerWSD.getDefaultInstance((WorldServer) e.getWorld()).updateHearts((EntityPlayer) e.getEntity());
+        }
     }
 }
