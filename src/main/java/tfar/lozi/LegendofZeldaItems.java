@@ -1,12 +1,17 @@
 package tfar.lozi;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.IRegistry;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -14,6 +19,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import tfar.lozi.storage.HeartContainerWSD;
+
+import java.util.Map;
 
 import static tfar.lozi.storage.HeartContainerWSD.SPAWN_REINFORCEMENTS_CHANCE;
 
@@ -42,7 +49,6 @@ public class LegendofZeldaItems {
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-
     }
 
     @SubscribeEvent

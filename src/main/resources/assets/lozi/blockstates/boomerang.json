@@ -1,29 +1,18 @@
 {
   "forge_marker": 1,
+  "flip-v": true,
   "defaults": {
-    "model": "lozi:boomerang.obj"
+    "model": "lozi:boomerang.obj",
+    "custom": { "flip-v": true }
   },
   "variants": {
     "inventory": [
       {
         "transform": {
-          "thirdperson_lefthand": {
-            "scale": 1
-          },
           "thirdperson_righthand": {
-            "scale": 1
-          },
-          "gui": {
-            "scale": 1
-          },
-          "firstperson_righthand": {
-            "scale": 1
-          },
-          "firstperson_lefthand": {
-            "scale": 1
-          },
-          "ground": {
-            "scale": 1
+            "rotation": [ 15, 90, 0 ],
+            "translation": [ 5, -20, -13 ],
+            "scale": [ 0.55, 0.55, 0.55 ]
           }
         }
       }
