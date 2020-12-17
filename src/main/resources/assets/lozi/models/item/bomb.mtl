@@ -1,2 +1,3 @@
+newmtl initialShadingGroup
 newmtl lambert2SG
 map_Kd lozi:item/bomb

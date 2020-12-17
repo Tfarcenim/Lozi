@@ -13,7 +13,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
-import tfar.lozi.LegendofZeldaItems;
+import tfar.lozi.LegendOfZeldaItems;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class HeartContainerWSD extends WorldSavedData {
 
     public static HeartContainerWSD get(WorldServer world) {
         MapStorage storage = world.getPerWorldStorage();
-        String name = LegendofZeldaItems.MODID+":"+world.provider.getDimension();
+        String name = LegendOfZeldaItems.MODID+":"+world.provider.getDimension();
         HeartContainerWSD instance = (HeartContainerWSD) storage.getOrLoadData(HeartContainerWSD.class, name);
 
         if (instance == null) {
