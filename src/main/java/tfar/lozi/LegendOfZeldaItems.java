@@ -1,15 +1,24 @@
 package tfar.lozi;
 
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArrow;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -47,7 +56,7 @@ public class LegendOfZeldaItems {
     @SubscribeEvent
     public static void blocks(RegistryEvent.Register<Block> event) {
         ModBlocks.register(event.getRegistry());
-        GameRegistry.registerTileEntity(MasterDoorBlockEntity.class,new ResourceLocation(MODID,"locked_master_door"));
+        GameRegistry.registerTileEntity(MasterDoorBlockEntity.class, new ResourceLocation(MODID, "locked_master_door"));
     }
 
     @SubscribeEvent
@@ -58,6 +67,7 @@ public class LegendOfZeldaItems {
     public static void registerEntity(RegistryEvent.Register<EntityEntry> e) {
         e.getRegistry().register(ModEntities.BOOMERANG);
         e.getRegistry().register(ModEntities.BOMB);
+        e.getRegistry().register(ModEntities.HOOK_SHOT);
     }
 
     @SubscribeEvent
@@ -80,7 +90,7 @@ public class LegendOfZeldaItems {
         if (!quiver.isEmpty()) {
             if (QuiverItem.hasArrows(quiver)) {
                 player.setActiveHand(e.getHand());
-                e.setAction(ActionResult.newResult(EnumActionResult.SUCCESS,stack));
+                e.setAction(ActionResult.newResult(EnumActionResult.SUCCESS, stack));
             }
         }
     }
@@ -92,12 +102,66 @@ public class LegendOfZeldaItems {
         }
 
         EntityPlayer player = e.getEntityPlayer();
-        ItemStack stack = e.getBow();
+        ItemStack bow = e.getBow();
         ItemStack quiver = getQuiver(player);
+        World world = player.world;
 
-        if (!quiver.isEmpty()) {
-            if (QuiverItem.hasArrows(quiver)) {
-                e.setCharge(1);
+        //todo, replace with mixin
+        if (QuiverItem.hasArrows(quiver)) {
+            ItemStack arrow = new ItemStack(Items.ARROW);
+
+            float f = ItemBow.getArrowVelocity(e.getCharge());
+
+            if ((double) f >= 0.1D) {
+                boolean flag1 = player.capabilities.isCreativeMode || (arrow.getItem() instanceof ItemArrow && ((ItemArrow) arrow.getItem()).isInfinite(arrow, arrow, player));
+
+                if (!world.isRemote) {
+                    ItemArrow itemarrow = (ItemArrow) (arrow.getItem() instanceof ItemArrow ? arrow.getItem() : Items.ARROW);
+                    EntityArrow entityarrow = itemarrow.createArrow(world, arrow, player);
+                    entityarrow = ((ItemBow) bow.getItem()).customizeArrow(entityarrow);
+                    entityarrow.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, f * 3.0F, 1.0F);
+
+                    if (f == 1.0F) {
+                        entityarrow.setIsCritical(true);
+                    }
+
+                    int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, arrow);
+
+                    if (j > 0) {
+                        entityarrow.setDamage(entityarrow.getDamage() + (double) j * 0.5D + 0.5D);
+                    }
+
+                    int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, arrow);
+
+                    if (k > 0) {
+                        entityarrow.setKnockbackStrength(k);
+                    }
+
+                    if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, arrow) > 0) {
+                        entityarrow.setFire(100);
+                    }
+
+                    arrow.damageItem(1, player);
+
+                    if (flag1 || player.capabilities.isCreativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {
+                        entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+                    }
+
+                    world.spawnEntity(entityarrow);
+                }
+
+                world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.rand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+
+                if (!flag1 && !player.capabilities.isCreativeMode) {
+                    arrow.shrink(1);
+
+                    if (arrow.isEmpty()) {
+                        player.inventory.deleteStack(arrow);
+                    }
+                }
+
+                player.addStat(StatList.getObjectUseStats(arrow.getItem()));
+                quiver.getTagCompound().setInteger("arrows", quiver.getTagCompound().getInteger("arrows") - 1);
             }
         }
     }

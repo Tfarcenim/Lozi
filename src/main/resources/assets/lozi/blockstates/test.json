@@ -1,0 +1,37 @@
+{
+  "gui_light": "front",
+  "loader": "forge:separate-perspective",
+  "base": {
+    "parent": "examplemod:item/held/example_bow",
+    "overrides": [
+      {
+        "predicate": {
+          "examplemod:pull": 1.0
+        },
+        "model": "examplemod:item/example_bow_pulling_0"
+      },
+      {
+        "predicate": {
+          "examplemod:pull": 1.0,
+          "examplemod:pulling": 0.65
+        },
+        "model": "examplemod:item/example_bow_pulling_1"
+      },
+      {
+        "predicate": {
+          "examplemod:pull": 1.0,
+          "examplemod:pulling": 0.9
+        },
+        "model": "examplemod:item/example_bow_pulling_2"
+      }
+    ]
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "examplemod:item/inventory/example_bow"
+      }
+    }
+  }
+}

@@ -14,7 +14,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import tfar.lozi.entity.BombEntity;
 import tfar.lozi.entity.BoomerangEntity;
+import tfar.lozi.entity.HookshotEntity;
 import tfar.lozi.render.BombRenderer;
+import tfar.lozi.render.HookshotRenderer;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientModEvents {
@@ -25,6 +27,8 @@ public class ClientModEvents {
 
 		RenderingRegistry.registerEntityRenderingHandler(BombEntity.class, renderManager -> new BombRenderer(renderManager, ModItems.BOMB,
 				Minecraft.getMinecraft().getRenderItem()));
+
+		RenderingRegistry.registerEntityRenderingHandler(HookshotEntity.class, HookshotRenderer::new);
 
 
 		RenderingRegistry.registerEntityRenderingHandler(BoomerangEntity.class, renderManager -> new RenderSnowball<>(renderManager, ModItems.BOOMERANG,

@@ -30,6 +30,7 @@ public class ModItems {
     public static final Item LOCKED_DOOR = new ItemDoor(ModBlocks.LOCKED_DOOR);
     public static final Item LOCKED_MASTER_DOOR = new LockedMasterDoorItem(ModBlocks.LOCKED_MASTER_DOOR);
     public static final Item HEART_CONTAINER = new HeartContainerItem();
+    public static final Item HOOK_SHOT = new HookShotItem();
 
     private static List<Item> cache;
 

@@ -23,9 +23,6 @@ public class HeartContainerWSD extends WorldSavedData {
 
     private final Map<UUID,Integer> uuidStorageHashMap = new HashMap<>();
 
-    public static final IAttribute SPAWN_REINFORCEMENTS_CHANCE = (new RangedAttribute(null, "lozi.hearts",
-            0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Extra Hearts");
-
 
     public static final UUID uuid = UUID.fromString("90a78391-f56c-4e88-9415-5afd8be43844");
 
