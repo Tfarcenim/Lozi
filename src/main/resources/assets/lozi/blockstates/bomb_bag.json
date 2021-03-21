@@ -1,0 +1,15 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "lozi:bomb_bag.obj",
+    "custom": { "flip-v": true }
+  },
+  "variants": {
+    "inventory": [
+      {
+        "transform": {
+        }
+      }
+    ]
+  }
+}

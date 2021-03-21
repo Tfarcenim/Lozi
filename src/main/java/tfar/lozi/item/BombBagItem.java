@@ -21,9 +21,9 @@ public class BombBagItem extends Item {
         if (!worldIn.isRemote && hasBombs(player.getHeldItem(hand))) {
             ItemStack stack = player.getHeldItem(hand);
             if (hasBombs(stack)) {
-                BombEntity entitytntprimed = new BombEntity(worldIn, pos.getX() + 0.5, pos.getY()+1, pos.getZ() + 0.5, player);
-                worldIn.spawnEntity(entitytntprimed);
-                worldIn.playSound(null, entitytntprimed.posX, entitytntprimed.posY, entitytntprimed.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                BombEntity bombEntity = new BombEntity(worldIn, pos.getX() + 0.5, pos.getY()+1, pos.getZ() + 0.5, player);
+                worldIn.spawnEntity(bombEntity);
+                worldIn.playSound(null, bombEntity.posX, bombEntity.posY, bombEntity.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 stack.getTagCompound().setInteger("bombs", stack.getTagCompound().getInteger("bombs") - 1);
             }
         }
