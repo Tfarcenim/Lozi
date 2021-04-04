@@ -74,4 +74,10 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+
+    jar {
+        manifest {
+            attributes 'FMLAT': 'lozi_at.cfg'
+        }
+    }
 }

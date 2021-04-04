@@ -2,6 +2,7 @@ package tfar.lozi;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -18,6 +19,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -26,10 +28,14 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import tfar.lozi.entity.BombEntity;
 import tfar.lozi.item.QuiverItem;
 import tfar.lozi.storage.HeartContainerWSD;
 
@@ -40,7 +46,7 @@ import java.util.List;
 public class LegendOfZeldaItems {
     public static final String MODID = "lozi";
     public static final String NAME = "Legend of Zelda Items";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "@VERSION@";
 
     public static LegendOfZeldaItems instance;
 
@@ -48,9 +54,9 @@ public class LegendOfZeldaItems {
         instance = this;
     }
 
-    @SubscribeEvent
-    public static void items(RegistryEvent.Register<Item> event) {
-        ModItems.register(event.getRegistry());
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent e) {
+        LoziConfig.parseConfig();
     }
 
     @SubscribeEvent
@@ -60,20 +66,42 @@ public class LegendOfZeldaItems {
     }
 
     @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
+    public static void items(RegistryEvent.Register<Item> event) {
+        ModItems.register(event.getRegistry());
     }
 
     @SubscribeEvent
-    public static void registerEntity(RegistryEvent.Register<EntityEntry> e) {
+    public static void entities(RegistryEvent.Register<EntityEntry> e) {
         e.getRegistry().register(ModEntities.BOOMERANG);
         e.getRegistry().register(ModEntities.BOMB);
         e.getRegistry().register(ModEntities.HOOK_SHOT);
     }
 
     @SubscribeEvent
+    public static void configs(ConfigChangedEvent.OnConfigChangedEvent e) {
+        LoziConfig.parseConfig();
+    }
+
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+    }
+
+
+
+    @SubscribeEvent
     public static void playerRespawn(EntityJoinWorldEvent e) {
         if (e.getEntity() instanceof EntityPlayer && !e.getWorld().isRemote) {
             HeartContainerWSD.getDefaultInstance((WorldServer) e.getWorld()).updateHearts((EntityPlayer) e.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void explode(ExplosionEvent.Detonate e) {
+        Explosion explosion = e.getExplosion();
+        Entity cause = explosion.exploder;
+        if (cause instanceof BombEntity) {
+            World world = cause.world;
+            e.getAffectedBlocks().removeIf(pos -> !LoziConfig.bombable.contains(world.getBlockState(pos).getBlock()));
         }
     }
 

@@ -1,6 +1,7 @@
 package tfar.lozi;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraftforge.registries.IForgeRegistry;
 import tfar.lozi.item.*;
@@ -31,6 +32,7 @@ public class ModItems {
     public static final Item LOCKED_MASTER_DOOR = new LockedMasterDoorItem(ModBlocks.LOCKED_MASTER_DOOR);
     public static final Item HEART_CONTAINER = new HeartContainerItem();
     public static final Item HOOK_SHOT = new HookShotItem();
+    public static final Item HOVER_BOOTS = new HoverBootsItem(ItemArmor.ArmorMaterial.DIAMOND,1, EntityEquipmentSlot.FEET);
 
     private static List<Item> cache;
 

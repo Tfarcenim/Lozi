@@ -1,4 +1,4 @@
-package tfar.lozi.render;
+package tfar.lozi.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;

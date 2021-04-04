@@ -1,9 +1,7 @@
-package tfar.lozi;
+package tfar.lozi.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -12,11 +10,12 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import tfar.lozi.LegendOfZeldaItems;
+import tfar.lozi.ModItems;
+import tfar.lozi.block.BoomerangRenderer;
 import tfar.lozi.entity.BombEntity;
 import tfar.lozi.entity.BoomerangEntity;
 import tfar.lozi.entity.HookshotEntity;
-import tfar.lozi.render.BombRenderer;
-import tfar.lozi.render.HookshotRenderer;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientModEvents {
@@ -31,7 +30,7 @@ public class ClientModEvents {
 		RenderingRegistry.registerEntityRenderingHandler(HookshotEntity.class, HookshotRenderer::new);
 
 
-		RenderingRegistry.registerEntityRenderingHandler(BoomerangEntity.class, renderManager -> new RenderSnowball<>(renderManager, ModItems.BOOMERANG,
+		RenderingRegistry.registerEntityRenderingHandler(BoomerangEntity.class, renderManager -> new BoomerangRenderer(renderManager, ModItems.BOOMERANG,
 				Minecraft.getMinecraft().getRenderItem()));
 
 		ModItems.getItems().forEach(ClientModEvents::registerItemModel);

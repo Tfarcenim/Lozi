@@ -20,7 +20,7 @@ public class BoomerangEntity extends EntityThrowable {
 
     private EntityPlayer owner;
     private boolean returning;
-    private int airTime;
+    public int airTime;
 
     public BoomerangEntity(World worldIn) {
         super(worldIn);
@@ -32,12 +32,14 @@ public class BoomerangEntity extends EntityThrowable {
         this.posX = playerIn.posX;
         this.posY = playerIn.posY + playerIn.getEyeHeight();
         this.posZ = playerIn.posZ;
+        this.rotationYaw = (float)(Math.random() * 360.0D);
         setNoGravity(true);
     }
 
     @Override
     public void onUpdate() {
         super.onUpdate();
+        airTime++;
         if (!returning && ticksExisted > 30) {
             returning = true;
         }
@@ -75,6 +77,7 @@ public class BoomerangEntity extends EntityThrowable {
                 returning = true;
             } else if (raytraceresult.typeOfHit == RayTraceResult.Type.ENTITY) {
                 if (raytraceresult.entityHit == owner) {
+                    if (!owner.capabilities.isCreativeMode)
                     owner.addItemStackToInventory(new ItemStack(ModItems.BOOMERANG));
                     this.setDead();
                 } else if (raytraceresult.entityHit instanceof EntityLivingBase) {
