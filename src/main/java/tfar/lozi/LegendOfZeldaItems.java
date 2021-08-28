@@ -25,6 +25,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
@@ -36,6 +37,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import tfar.lozi.entity.BombEntity;
+import tfar.lozi.item.HoverBootsItem;
 import tfar.lozi.item.QuiverItem;
 import tfar.lozi.storage.HeartContainerWSD;
 
@@ -102,6 +104,15 @@ public class LegendOfZeldaItems {
         if (cause instanceof BombEntity) {
             World world = cause.world;
             e.getAffectedBlocks().removeIf(pos -> !LoziConfig.bombable.contains(world.getBlockState(pos).getBlock()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void equipment(LivingEquipmentChangeEvent e) {
+        ItemStack from = e.getFrom();
+        ItemStack to = e.getTo();
+        if (from.getItem() == ModItems.HOVER_BOOTS) {
+            e.getEntityLiving().setNoGravity(false);
         }
     }
 
